@@ -1,0 +1,42 @@
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+
+typedef long long L;
+
+int g[100] = { 0 };
+int h[100] = { 0 };
+int m, n;
+int Max_Path = 0;
+
+int my_Dfs(int R_Line, int R_Row, int nm)//dfs深度搜索
+{
+	if (R_Line < 0 || R_Line >n || R_Row < 0 || R_Row >m) return 0;
+	if (R_Line == n && R_Row == m)
+	{
+		if (Max_Path<nm) Max_Path = nm;//附给最大值 
+		return nm;
+	}
+	if (g[R_Line] < 2) {
+		g[R_Line]++;//如果当前所在的行走的次数小于二，则++ 
+		my_Dfs(R_Line, R_Row + 1, nm + 1);
+		my_Dfs(R_Line, R_Row - 1, nm + 1);
+		g[R_Line]--;
+	}
+	if (h[R_Row] < 2) {
+		h[R_Row]++;//如果当前所在的列走的次数小于二，则++ 
+		my_Dfs(R_Line + 1, R_Row, nm + 1);
+		my_Dfs(R_Line - 1, R_Row, nm + 1);
+		h[R_Row]--;
+	}
+	return 0;
+}
+
+int main()
+{
+	scanf("%d%d",&n,&m);
+	my_Dfs(0, 0, 0);
+	printf("%d",Max_Path);
+	return 0;
+}

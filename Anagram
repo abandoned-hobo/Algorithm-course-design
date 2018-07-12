@@ -1,0 +1,23 @@
+#include <iostream>
+#include <algorithm>
+#include<string.h>
+using namespace std;
+void my_Anag(char* a,int l)
+{
+    sort(a,a+l);//按升序排序
+    do
+    {
+        for(int i=0;i<l;i++)
+            cout<<a[i];
+        cout<<endl;
+    }while(next_permutation(a,a+l));//按字母表顺序生成给定序列的下一个较大的序列，直到整个序列为减序为止
+
+
+}
+int main(void)
+{
+    char s[10];
+    cin>>s;
+    my_Anag(s,strlen(s));
+    return 0;
+}

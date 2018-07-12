@@ -1,0 +1,52 @@
+#include<iostream>
+#include<string.h>
+#include<queue>
+#define cycle(a,b) for(int a=0;a<b;a++)
+using namespace std;
+int main()
+{
+	string qw;
+	cin >> qw;
+	int l = qw.length();//字符串长度
+	int n[26];
+	memset(n, 0, sizeof(n));
+	cycle(i,l)
+	//for (int i=0; i<l; i++)
+	{
+		n[(int)qw[i]-97]+=1;//统计出现的字符及个数
+	}
+	priority_queue <int, vector<int>, greater<int> > jk;//创建队列
+	cycle(i,26)
+	//for (int i = 0; i < 26; i++)//将n[i]值压入队列
+	{
+		jk.push(n[i]);
+	}
+	int code_sum = 0;
+	while (!jk.empty())//出队，编码,求和
+	{
+		if (jk.top() == 0)
+		{
+			jk.pop();
+			continue;
+		}
+		else
+		{
+			int x = jk.top();
+			jk.pop();
+			if (jk.size()>0)
+			{
+            int y = jk.top();
+				jk.pop();
+				jk.push(x + y);
+				code_sum = code_sum + x + y;
+			}
+			else
+			{
+				if (code_sum == 0)code_sum = code_sum + x;
+				break;
+        }
+		}
+	}
+	cout << code_sum ;
+	return 0;
+}

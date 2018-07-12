@@ -1,0 +1,28 @@
+#include<string.h>
+#include<stdio.h>
+
+#define T_AX 10005//m <= 10000
+#define T_MD 1000000007 //Output the answer module 1000000007
+#define cycle(a,b) for(int a=1;a<=b;a++)//for循环
+
+int main()
+{
+	int n, m;
+	scanf("%d%d",&n,&m);
+	int go_up[T_AX];
+	long TIMES[T_AX] = { 1 };
+	cycle(i,m)//输入每次可以上升的楼层数
+	{
+		scanf("%d",&go_up[i]);
+	}
+	cycle(i,n)//对电梯上升方式进行统计
+	{
+	    cycle(j,m)
+		{
+			if (i - go_up[j] >= 0)
+				TIMES[i] = (TIMES[i] + TIMES[i - go_up[j]]) %T_MD;
+		}
+	}
+	printf("%ld\n",TIMES[n-1]);
+	return 0;
+}

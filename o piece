@@ -1,0 +1,70 @@
+#include <iostream>
+#include <stdio.h>
+#include <string.h>
+#include <queue>
+#define cycle(a,b) for(int a=1;a<=b;a++)
+using namespace std;
+char Pieces[1002][1002];
+int dxys[4][2] = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };//对其相邻处匹配的辅助数组
+int  N, M;
+int S_num;
+struct No {
+	int x;
+	int y;
+};
+
+void my_BFS(int x, int y)//广度优先搜索
+{
+	queue <No> w;
+	No MY_no;
+	MY_no.x = x;
+	MY_no.y = y;
+	w.push(MY_no);
+	Pieces[x][y] = '.';
+	while (!w.empty())
+	{
+		No cur = w.front();
+		No et;
+		for (int i = 0; i<4; i++)
+		{//对其上下左右进行匹配
+			et.x = cur.x + dxys[i][0];
+			et.y = cur.y + dxys[i][1];
+			if (Pieces[et.x][et.y] == 'o')
+			{
+				Pieces[et.x][et.y] = '.';//遍历过,,,,,,则置为'.'
+				w.push(et);
+			}
+		}
+		w.pop();
+	}
+}
+int main()
+{
+	scanf("%d%d",&N,&M);//shuru
+	S_num = 0;
+	cycle(i,N)
+	//for (int i = 1; i <= N; i++)
+	{
+	    getchar();
+	    cycle(j,M)
+		//for (int j = 1; j <= M; j++)
+		{
+			Pieces[i][j]=getchar();
+		}
+	}
+	cycle(i,N)
+	//for (int i = 1; i <= N; i++)
+	{
+	    cycle(j,M)
+		//for (int j = 1; j <= M; j++)
+		{
+			if (Pieces[i][j] == 'o')//如果是o，，则调用my_Bfs，，进行匹配
+			{
+				S_num=S_num+1;
+				my_BFS(i, j);
+			}
+		}
+	}
+	printf("%d",S_num);
+	return 0;
+}

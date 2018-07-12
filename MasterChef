@@ -1,0 +1,47 @@
+#include<iostream>
+#include<stdio.h>
+#include<functional>
+#include<algorithm>
+#include<queue>
+#define cycle(a,b) for(long int a=0;a<b;a++)
+#define L long int
+using namespace std;
+int main()
+{
+    L n,m;
+	scanf("%ld%ld",&n,&m);
+	L *A = new long int [n];
+	cycle(i,n)
+    //for (long int i=0; i<n; i++)
+	{
+		scanf("%ld",&A[i]);//输入每种菜所对应的时间 
+	}
+	sort(A,A+n);//升序排序
+    priority_queue<L, vector<L>, greater<L> > chef;//优先队列
+	L j=0;
+	cycle(i,n)
+	//for(long int i=0;i<n;i++)
+	{
+		if(j<m)//现在还有剩余的锅，则继续烹饪 
+		{
+			chef.push(A[n-i-1]);
+			j++;
+		}
+		else
+		{
+			L q=chef.top()+A[n-1-i];
+		    chef.pop();
+			chef.push(q);
+			j++;
+		}
+	}
+	cycle(i,m)
+	//for(long int i=0;i<m;i++)
+	{
+		if(i==(m-1))
+			printf("%ld\n",chef.top());
+		else
+			chef.pop();
+	}
+	return 0;
+}

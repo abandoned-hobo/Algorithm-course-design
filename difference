@@ -1,0 +1,36 @@
+#include <iostream>
+#include <stdio.h>
+#include <string.h>                  //for memset
+#define cycle for(int i=0;i<n;++i)
+using namespace std;
+const int MX = 100 + 10;
+int wn[MX];
+int d_p[MX*100];
+bool ste[MX][MX];
+int main()
+{
+    int n;
+    while (scanf("%d", &n) != EOF) {//数组建立及输入
+        int SUM = 0;
+        cycle
+        {
+        //for (int i = 0; i < n; ++i) {
+            scanf("%d", &wn[i]);
+            SUM += wn[i];
+        }
+        memset(d_p, 0, sizeof(d_p));
+        memset(ste, 0, sizeof(ste));
+        cycle//动态规划查找最小差值 
+        //for (int i = 0; i < n; ++i)
+            for (int j = SUM/2; j >= wn[i]; --j) {
+                if (d_p[j] < d_p[j-wn[i]] + wn[i]) {
+                    d_p[j] = d_p[j-wn[i]] + wn[i];
+                    ste[i][j] = true;
+                }
+            }
+        printf("%d\n", SUM - d_p[SUM/2]*2);
+        }
+
+    return 0;
+}
+

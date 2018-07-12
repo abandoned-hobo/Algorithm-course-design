@@ -1,0 +1,86 @@
+#include <iostream>
+#include <stdio.h>
+#include <string.h>
+
+using namespace std;
+
+#define MAX 100005
+
+int num[MAX];
+int Tree_C[MAX];//树状数组
+int N;
+void In_it()//初始化数组
+{
+    memset(Tree_C,0,sizeof(Tree_C));
+    memset(num,0,sizeof(num));
+}
+int Low_Bit(int i)
+ /*  求得的是i的所有因子中满足以下条件的那个数值：
+
+1.最大的因子
+
+2.该因子可以表示成2的整数次幂。*/
+{
+    return i & (-i);
+}
+int to_add(int i)//求一段连续区间的和
+{
+    int ans=0;
+    while(i>0)
+    {
+        ans+=Tree_C[i];
+        i-=Low_Bit(i);
+    }
+    return ans;
+}
+void Up_Date(int i,int v)//树状数组的维护// 修改节点值
+{
+    while(i<=N)
+    {
+        Tree_C[i]+=v;
+        i += Low_Bit(i);
+    }
+}
+
+int main()
+{
+    int M;
+    while(~scanf("%d%d",&N,&M)&&N&&M){
+    int x[MAX][3];
+
+    In_it();
+    for(int i=1;i<=N;i++)
+    {
+        scanf("%d",&num[i]);
+        Up_Date(i,num[i]);
+    }
+    for(int j=1;j<=M;j++)
+    {
+        for(int k=0;k<3;k++)
+        {
+            cin>>x[j][k];
+        }
+    }
+    for(int j=1;j<=M;j++)
+    {
+        switch(x[j][0])//根据c的值进行不同的操作
+        {
+        case 1:
+            {
+
+                Up_Date(x[j][1],-num[x[j][1]]);
+                Up_Date(x[j][1],x[j][2]);
+                num[x[j][1]]=x[j][2];
+                break;
+            }
+        case 2:
+            {
+                printf("%d\n",to_add(x[j][2])-to_add(x[j][1]-1));
+                break;
+            }
+        default:
+            break;
+        }
+    }
+}
+}

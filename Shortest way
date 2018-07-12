@@ -1,0 +1,66 @@
+#include<string.h>
+#include <iostream>
+#include<stdio.h>
+#define cycle(a,b) for(int a=1;a<=b;a++)
+using namespace std;
+const int INF=0x3f3f3f;
+const int N=1000;
+struct tp
+{
+    int dis;
+} q_xm[N][N];//输入的；
+struct tp1
+{
+    int dis;
+} i_o[N];//起点到i点的最短路径及花费；
+int mys[N];
+int main()
+{
+    int n,m,xx,yy,dis;
+    while(~scanf("%d%d",&n,&m)&&n&&m)
+    {
+        cycle(i,n)
+        //for(i=1; i<=n; i++)
+            cycle(j,n)
+            //for(j=1; j<=n; j++)
+                q_xm[i][j].dis=(i==j?0:INF);
+        memset(mys,0,sizeof(mys));
+        cycle(i,m)
+        //for(i=1; i<=m; i++)
+        {
+            scanf("%d%d%d",&xx,&yy,&dis);
+            if(dis<q_xm[xx][yy].dis)//如果最短路只有一条，两个变量都无条件改变；
+            {
+                q_xm[xx][yy].dis=q_xm[yy][xx].dis=dis;
+            }
+        }
+        scanf("%d%d",&xx,&yy);
+        //for(i=1; i<=n; i++)
+        cycle(i,n)
+            i_o[i].dis=i==xx?0:INF;
+        cycle(i,n)
+        //for(i=1; i<=n; i++)
+        {
+            int x,mm=INF;
+            cycle(j,n)
+            //for(j=1; j<=n; j++)
+                if(!mys[j]&&i_o[j].dis<=mm)
+                    mm=i_o[x=j].dis;
+            mys[x]=1;
+            cycle(j,n)
+            //for(j=1; j<=n; j++)
+            {
+                if(i_o[j].dis>q_xm[x][j].dis+i_o[x].dis)
+                {
+                    i_o[j].dis=q_xm[x][j].dis+i_o[x].dis;
+                }
+            }
+
+        }
+        if(i_o[yy].dis!=INF)
+        printf("%d\n",i_o[yy].dis);
+        else
+        printf("-1\n");//如果未找到则输出-1
+    }
+    return 0;
+}

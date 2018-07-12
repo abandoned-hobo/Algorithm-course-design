@@ -1,0 +1,27 @@
+//#include<iostream>
+#include<stdio.h>
+//using namespace std;
+int m,l;
+int main()
+{
+	int ans=0;//用于计算时间累加 
+	scanf("%d%d",&m,&l);
+	//cin >> m >> l;
+	int n = l-1;
+	int cut = 1;
+	int time = 0;
+	while (time < n)
+	{
+		ans++;
+		time += cut;
+		cut = cut << 1;
+		if (cut > m) cut = m;
+	}
+	if(ans>67568327)//如果大于67568927，，，则输出timeout 
+        printf("Timeout\n");
+        //cout<<"Timeout"<<endl;
+    else
+        printf("%d\n",ans);
+        //cout << ans << endl;
+	return 0;
+}

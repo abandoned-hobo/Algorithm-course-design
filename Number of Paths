@@ -1,0 +1,60 @@
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+#define MAX 110
+#define MOD 1000000007
+
+struct phs
+{
+	int mps[MAX][MAX];
+}w,s;
+
+int n;
+
+phs SK_LT(phs &x, phs &y)//寻找通路数，并将通路数存在ses中 
+{
+	phs ses;
+	for (int a = 0; a < n; a++)
+		for (int b = 0; b< n; b++)
+		{
+		ses.mps[a][b] = 0;
+		for (int c = 0; c < n; c++)
+		{
+			long long mv = x.mps[a][c];
+			mv = (mv * y.mps[c][b]) % MOD;
+			ses.mps[a][b] = (ses.mps[a][b] + mv) % MOD;
+		}
+		}
+	return ses;
+}
+
+int main() {
+	int m;
+	int ses = 0;
+	long long k;
+	scanf("%d%d%lld",&n,&m,&k);
+	while (m--) {
+		int st, ed;
+		scanf("%d%d",&st,&ed);
+		if (st == ed)//如果是一个环，即在对角线上，则对角线上的值加一 
+			w.mps[st][ed] ++;
+		else {
+			w.mps[st][ed] ++;//如果不是环，则 两侧各加一 
+			w.mps[ed][st] ++;
+		}
+	}
+	for (int a = 0; a < n; a++)
+		s.mps[a][a] = 1;
+	while (k) {
+		if (k % 2)
+            s = SK_LT(s, w);
+		w = SK_LT(w, w);
+		k /= 2;
+	}
+	for (int a = 0; a < n;a++)
+		for (int b= 0; b < n; b++)
+			ses = (ses + s.mps[a][b]) % MOD;//相加 
+	printf("%d",ses);
+	return 0;
+}

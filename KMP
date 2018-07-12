@@ -1,0 +1,49 @@
+#include <iostream>
+#include <string.h>
+#include <stdio.h>
+const int N = 1000002;
+char S[N], T[N];
+int st, tt;
+using namespace std;
+void c_next(char *ar, int *n, int len)
+{
+    n[0] = -1;//next[0]初始化为-1，-1表示不存在相同的最大前缀和最大后缀
+    int k = -1;//k初始化为-1
+    for (int q = 1; q <= len-1; q++)
+    {
+        while (k > -1 && ar[k + 1] != ar[q])//如果下一个不同，那么k就变成n[k]，注意n[k]是小于k的，无论k取任何值。
+        {
+            k = n[k];//往前回溯
+        }
+        if (ar[k + 1] == ar[q])//如果相同，k++
+        {
+            k = k + 1;
+        }
+        n[q] = k;//这个是把算的k的值（就是相同的最大前缀和最大后缀长）赋给n[q]
+    }
+}
+void my_KMP(char *ar, int st, char *br, int tt)
+{
+    int *nt = new int[tt];
+    c_next(br, nt, tt);//计算nt数组
+    int k = -1;
+    for (int i = 0; i < st; i++)
+    {
+        while (k >-1&& br[k + 1] != ar[i])//br和ar不匹配，且k>-1（表示br和ar有部分匹配）
+            k = nt[k];//往前回溯
+        if (br[k + 1] == ar[i])
+            k = k + 1;
+        if (k == tt-1)//说明k移动到br的最末端
+        {
+            printf("%d\n",i-tt+2);//输出相应的位置
+        }
+    }
+}
+int main()
+{
+    cin>>S>>T;//输入两个数组
+    st = strlen(S);//求两个数组长度
+    tt = strlen(T);
+    my_KMP(T,tt,S,st);
+    return 0;
+}
